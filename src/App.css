@@ -24,3 +24,20 @@
 .newItem  {
   margin: 20px 0;
 }
+
+.error {
+  border: 1px solid red;
+}
+
+.error__message {
+  color: red;
+  font-size: 20px;
+}
+
+.active__filter {
+  background-color: aquamarine;
+}
+
+.done {
+  opacity: .3;
+}
