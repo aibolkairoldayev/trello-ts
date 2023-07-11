@@ -114,8 +114,12 @@ function App() {
 
   return (
     <div className="App">
-      <AddItemForm addItem={addTodoList}/>
-      {
+      <div className="todolist__title">
+        <h1>Add new todolist</h1>
+        <AddItemForm addItem={addTodoList}/>
+      </div>
+     <div className="app__content">
+     {
         todoLists.map(tl => {
           let tasksForTodolist = tasksObj[tl.id];
           if (tl.filter === "completed") {
@@ -143,6 +147,7 @@ function App() {
           )
         })
       }
+     </div>
     </div>
   );
 }
