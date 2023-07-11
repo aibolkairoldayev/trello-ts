@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from "react";
 import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
+import { EditableSpan } from "./EditableSpan";
 
 export type TaskType = {
     id: string;
@@ -17,6 +18,8 @@ type PropsType = {
     changeTaskStatus: (taskid: string, isDone: boolean, todoListId:string) => void
     filter: FilterValuesType
     removeTodoList: (todoListId:string) => void
+    changeTodoListTitle: (todoListId:string, newTitle:string)=> void
+    changeTaskTitle: (taskid: string, newTitle: string, todoListId:string)=>void
 }
 
 export function Todolist(props: PropsType) {
@@ -25,14 +28,15 @@ export function Todolist(props: PropsType) {
     const onActiveClickHandler = () => props.changeFilter('active', props.id)
     const onCompletedClickHandler = () => props.changeFilter('completed', props.id)
     const removeTodoList = () => props.removeTodoList(props.id)
+    const changeTodoListTitle = (newTitle:string) => props.changeTodoListTitle(props.id, newTitle)
     
     const addTask = (title: string)=> {
         props.addTask(title, props.id)
     }
-
+    
     return (
         <div className="item">
-            <h3>{props.title}<button onClick={removeTodoList}>X</button></h3>
+            <h3><EditableSpan title={props.title} onChange={changeTodoListTitle}/><button onClick={removeTodoList}>X</button></h3>
             <AddItemForm addItem={addTask}/>
             <ul>
                 {
@@ -42,6 +46,9 @@ export function Todolist(props: PropsType) {
                         }
                         const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)
+                        }
+                        const onChangeTitleHandler = (newTitle:string) => {
+                            props.changeTaskTitle(task.id, newTitle, props.id)
                         }
                         return (
                             <li
@@ -53,7 +60,7 @@ export function Todolist(props: PropsType) {
                                     checked={task.isDone}
                                     onChange={onChangeStatusHandler}
                                 />
-                                <span>{task.name}</span>
+                                <EditableSpan title={task.name} onChange={onChangeTitleHandler}/>
                                 <button onClick={onRemoveHandler}>x</button>
                             </li>
                         )
@@ -64,11 +71,13 @@ export function Todolist(props: PropsType) {
                 <button
                     onClick={onAllClickHandler}
                     className={props.filter === 'all' ? "active__filter" : ''}
-                >All</button>
+                >All
+                </button>
                 <button
                     onClick={onActiveClickHandler}
                     className={props.filter === 'active' ? "active__filter" : ''}
-                >Active</button>
+                >Active
+                </button>
                 <button
                     onClick={onCompletedClickHandler}
                     className={props.filter === 'completed' ? "active__filter" : ''}
